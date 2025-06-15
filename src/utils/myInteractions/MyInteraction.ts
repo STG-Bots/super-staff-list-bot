@@ -6,15 +6,10 @@ export type MyInteractionSettings = {
     onlyDevs: boolean,
 }
 
-export interface IMyInteraction {
-    settings: MyInteractionSettings,
-    execute(interaction: Interaction): void;
-}
+export abstract class MyInteraction<T> {
+    public settings: T;
 
-export abstract class MyInteraction implements IMyInteraction {
-    public settings: MyInteractionSettings;
-
-    constructor(settings: MyInteractionSettings) {
+    constructor(settings: T) {
         this.settings = settings;
     }
 
