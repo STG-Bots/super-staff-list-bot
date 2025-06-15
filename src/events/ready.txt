@@ -2,7 +2,7 @@ const { Events, Status, ActivityType } = require("discord.js");
 
 const mongoose = require("mongoose");
 
-const { mongoUri } = require("../config.json");
+const { mongoUri } = require("../../config.json");
 const panels = require("../schemas/panels");
 
 async function numeroTotUtentiGuilds() {

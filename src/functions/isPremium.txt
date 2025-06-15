@@ -1,4 +1,4 @@
-const { supportGuildId } = require("../config.json");
+const { supportGuildId } = require("../../config.json");
 
 module.exports = async (guild) => {
     if (!guild) return;

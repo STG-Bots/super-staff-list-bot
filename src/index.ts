@@ -3,7 +3,7 @@ const { token, clientId, devs } = require("./config.json");
 const fs = require("fs");
 const loadCommands = require("./utils/loadCommands");
 
-global.client = new Client({
+const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
