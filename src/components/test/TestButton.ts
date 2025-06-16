@@ -1,13 +1,17 @@
-import { ButtonInteraction, ButtonStyle, GuildTextBasedChannel, ModalSubmitInteraction, StringSelectMenuInteraction } from "discord.js";
-import { MyButtonInteraction } from "../../utils/myInteractions/components/MyButtonInteraction";
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType } from "discord.js";
 import { MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-export class TestButton extends MyInteraction<StringSelectMenuInteraction> {
+export class TestButton extends MyInteraction<ButtonInteraction> {
     constructor() {
         super({
-            data: 
+            data: new ButtonBuilder()
+                .setCustomId("test")
+                .setStyle(ButtonStyle.Secondary),
+            botPermissions: [],
+            memberPermissions: [],
+            onlyDevs: false
         });
     }
-    async execute(interaction: StringSelectMenuInteraction): Promise<void> {
+    execute(interaction: ButtonInteraction<CacheType>): void {
     }
 }

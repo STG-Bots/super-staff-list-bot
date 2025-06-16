@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { MyCommandInteraction } from '../myInteractions/MyCommandInteraction';
 import { MyButtonInteraction } from '../myInteractions/components/MyButtonInteraction';
+import { MyComponentInteraction } from '../myInteractions/types';
+import { MyInteraction } from '../myInteractions/MyInteractions';
 
 export default abstract class Manager<T> {
     constructor(readonly folderPath: string) {
@@ -21,7 +23,7 @@ export class CommandsManager extends Manager<MyCommandInteraction> {
     }
 }
 
-export class ComponentsManager extends Manager<MyButtonInteraction> {
+export class ComponentsManager extends Manager<MyInteraction<MyComponentInteraction>> {
     constructor(readonly folderPath: string) {
         super(folderPath);
     }
