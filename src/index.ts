@@ -1,9 +1,6 @@
 import { Client, GatewayIntentBits, Events, ChannelType, MessageFlags, Partials, GuildMember, ButtonInteraction, ComponentType } from 'discord.js';
-import { token, clientId, devs } from './config.json';
-import { CommandsManager } from './utils/mybot/managers/CommandsManager';
-import { ComponentsManager } from './utils/mybot/managers/ComponentsManager';
-const fs = require("fs");
-const loadCommands = require("./utils/loadCommands");
+import 'dotenv/config';
+import { CommandsManager, ComponentsManager } from './utils/mybot/managers/Managers';
 
 const client = new Client({
     intents: [
@@ -15,7 +12,7 @@ const client = new Client({
     partials: [Partials.Message]
 });
 
-client.login(token);
+client.login(process.env.TOKEN);
 
 /* Slash commands */
 
@@ -26,7 +23,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const cmd = (await Promise.all(await commandsManager.loadFiles())).find(c => c.settings.data.name === interaction.commandName);
         if (!cmd) return;
         const { onlyDevs, memberPermissions, botPermissions } = cmd.settings;
-        if (!devs.includes(interaction.member?.user.id)) {
+        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id)) {
             if (onlyDevs) {
                 return interaction.reply({
                     content: "Comando riservato ai devs",
@@ -53,7 +50,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 });
 
-/* Autocomplete */
+/* Autocomplete 
 
 client.on(Events.InteractionCreate, (interaction) => {
     if (!interaction.isAutocomplete()) return;
@@ -78,7 +75,9 @@ client.on(Events.InteractionCreate, (interaction) => {
     }
 });
 
-/* Comandi context menu */
+*/
+
+/* ContextMenu commands 
 
 const contextMenuCommands = readFiles("./ctxmenucommands");
 client.on(Events.InteractionCreate, (interaction) => {
@@ -112,16 +111,18 @@ client.on(Events.InteractionCreate, (interaction) => {
         }
     }
 });
+*/
 
-// Carico i comandi ed i comandi context menu
-
+// Commands loading...
+/*
 (async () => {
     await loadCommands(commands.concat(contextMenuCommands));
     console.log(`Caricato(i) ${commands.length} slash command(s).`);
     console.log(`Caricato(i) ${contextMenuCommands.length} context menu command(s).`);
 })();
+*/
 
-/* Componenti */
+/* Components */
 const componentsManager = new ComponentsManager("./components");
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isMessageComponent() && !interaction.isButton() && !interaction.isAnySelectMenu()) return;
@@ -129,7 +130,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const component = (await Promise.all(await componentsManager.loadFiles())).find(c => c.settings.optionsInCustomId ? interaction.customId.startsWith(c.settings.customId) : c.settings.customId === interaction.customId);
         if (!component) return;
         const { onlyDevs, memberPermissions, botPermissions } = component.settings;
-        if (!devs.includes(interaction.member?.user.id)) {
+        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id)) {
             if (onlyDevs) {
                 return interaction.reply({
                     content: "Comando riservato ai devs",
@@ -157,7 +158,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 });
 
-/* Eventi */
+/* Eventi 
 
 const events = readFiles("./events");
 events.forEach(event => client.on(event.name, event.execute));
+
+*/

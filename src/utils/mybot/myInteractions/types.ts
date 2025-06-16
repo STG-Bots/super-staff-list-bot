@@ -15,8 +15,9 @@ export type BuilderData<I extends Interaction> = I extends ButtonInteraction ? B
                             (I extends StringSelectMenuInteraction ? StringSelectMenuInteraction : 
                             (I extends RoleSelectMenuInteraction ? RoleSelectMenuBuilder :
                             (I extends UserSelectMenuInteraction ? UserSelectMenuBuilder :
-                            (I extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder: MyBuilder)
-                            ))));
+                            (I extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder :
+                            (I extends ChatInputCommandInteraction ? SlashCommandBuilder : MyBuilder)
+                            )))));
 
 /* ^ Builders ^ */
 
