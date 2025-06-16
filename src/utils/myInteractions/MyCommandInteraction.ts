@@ -5,7 +5,7 @@ export type MyCommandInteractionSettings = MyInteractionSettings & {
     data: SlashCommandBuilder
 }
 
-export abstract class MyCommandInteraction extends MyInteraction<MyCommandInteractionSettings> {
+export abstract class MyCommandInteraction extends MyInteraction<MyCommandInteractionSettings, ChatInputCommandInteraction> {
     constructor(settings: MyCommandInteractionSettings) {
         super(settings);
     }

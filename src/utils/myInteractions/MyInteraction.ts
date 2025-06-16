@@ -6,12 +6,12 @@ export type MyInteractionSettings = {
     onlyDevs: boolean,
 }
 
-export abstract class MyInteraction<T> {
-    public settings: T;
+export abstract class MyInteraction<S extends MyInteractionSettings, I extends Interaction> {
+    public settings: S;
 
-    constructor(settings: T) {
+    constructor(settings: S) {
         this.settings = settings;
     }
 
-    abstract execute(interaction: Interaction): void;
+    abstract execute(interaction: I): void;
 }

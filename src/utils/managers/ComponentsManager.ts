@@ -1,4 +1,4 @@
-import { ComponentInteraction } from '../myInteractions/components/MyComponentInteraction';
+import { ComponentInteraction } from '../myInteractions/components/types';
 import { Manager } from './Manager';
 
 export class ComponentsManager extends Manager<ComponentInteraction> {
