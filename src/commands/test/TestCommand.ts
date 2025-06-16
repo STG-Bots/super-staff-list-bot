@@ -1,11 +1,12 @@
-import { ChatInputCommandInteraction, CommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
+import { ButtonBuilder, ButtonInteraction, ChatInputCommandInteraction, CommandInteraction, MessageFlags, ModalBuilder, SlashCommandBuilder } from "discord.js";
 import { MyCommandInteraction, MyCommandInteractionSettings } from "../../utils/myInteractions/MyCommandInteraction";
-import { MyInteractionSettings } from "../../utils/myInteractions/MyInteraction";
+import { MyInteractionSettings } from "../../utils/myInteractions/MyInteractions";
+import { MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-export class TestCommand extends MyCommandInteraction {
+class TestCommand extends MyInteraction<ButtonInteraction> {
     constructor() {
         super({
-            data: new SlashCommandBuilder(),
+            data: new SlashCommandBuilder().setName("test").setDescription("ciao"),
             botPermissions: [],
             memberPermissions: [],
             onlyDevs: false
@@ -18,3 +19,5 @@ export class TestCommand extends MyCommandInteraction {
         })
     }
 }
+
+export default new TestCommand();
