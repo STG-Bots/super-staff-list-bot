@@ -1,7 +1,7 @@
-import { ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType } from "discord.js";
-import { MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
+import { ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, ModalBuilder, ModalSubmitInteraction } from "discord.js";
+import { MyComponentInteraction, MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-export class TestButton extends MyInteraction<ButtonInteraction> {
+export class TestButton extends MyComponentInteraction<ModalSubmitInteraction> {
     constructor() {
         super({
             data: new ButtonBuilder()
@@ -12,6 +12,7 @@ export class TestButton extends MyInteraction<ButtonInteraction> {
             onlyDevs: false
         });
     }
-    execute(interaction: ButtonInteraction<CacheType>): void {
+    async execute(interaction: ModalSubmitInteraction<CacheType>): Promise<void> {
+        
     }
 }

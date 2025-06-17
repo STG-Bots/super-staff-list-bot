@@ -23,7 +23,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const cmd = (await Promise.all(await commandsManager.loadFiles())).find(c => c.settings.data.name === interaction.commandName);
         if (!cmd) return;
         const { onlyDevs, memberPermissions, botPermissions } = cmd.settings;
-        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id)) {
+        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id as string)) {
             if (onlyDevs) {
                 return interaction.reply({
                     content: "Comando riservato ai devs",
@@ -127,10 +127,10 @@ const componentsManager = new ComponentsManager("./components");
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isMessageComponent() && !interaction.isButton() && !interaction.isAnySelectMenu()) return;
     if (interaction.channel?.type != ChannelType.DM) {
-        const component = (await Promise.all(await componentsManager.loadFiles())).find(c => c.settings.optionsInCustomId ? interaction.customId.startsWith(c.settings.customId) : c.settings.customId === interaction.customId);
+        const component = (await Promise.all(await componentsManager.loadFiles())).find(c => c.settings.data ? interaction.customId.startsWith(c.settings.customId) : c.settings.customId === interaction.customId);
         if (!component) return;
         const { onlyDevs, memberPermissions, botPermissions } = component.settings;
-        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id)) {
+        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id as string)) {
             if (onlyDevs) {
                 return interaction.reply({
                     content: "Comando riservato ai devs",

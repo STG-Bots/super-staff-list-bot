@@ -6,24 +6,25 @@ export type MyComponentBuilder = ButtonBuilder |
 ModalBuilder  |
 StringSelectMenuBuilder |
 RoleSelectMenuBuilder |
-ChannelSelectMenuBuilder;
+ChannelSelectMenuBuilder |
+UserSelectMenuBuilder;
 
 export type MyBuilder = SlashCommandBuilder | MyComponentBuilder;
 
 export type BuilderData<I extends Interaction> = I extends ButtonInteraction ? ButtonBuilder :
                             (I extends ModalSubmitInteraction ? ModalBuilder :
-                            (I extends StringSelectMenuInteraction ? StringSelectMenuInteraction : 
+                            (I extends StringSelectMenuInteraction ? StringSelectMenuBuilder : 
                             (I extends RoleSelectMenuInteraction ? RoleSelectMenuBuilder :
                             (I extends UserSelectMenuInteraction ? UserSelectMenuBuilder :
                             (I extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder :
-                            (I extends ChatInputCommandInteraction ? SlashCommandBuilder : MyBuilder)
+                            (I extends ChatInputCommandInteraction ? SlashCommandBuilder : never)
                             )))));
 
 /* ^ Builders ^ */
 
 /* v Interactions v */
 
-export type MyComponentInteraction = ButtonInteraction | ModalSubmitInteraction | AnySelectMenuInteraction;
+export type MyComponentInteractions = ButtonInteraction | ModalSubmitInteraction | AnySelectMenuInteraction;
 
 export type MyInteractionData<I extends Interaction> = {
     data: BuilderData<I>,
