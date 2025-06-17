@@ -1,11 +1,12 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, ModalBuilder, ModalSubmitInteraction } from "discord.js";
 import { MyComponentInteraction, MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-export class TestButton extends MyComponentInteraction<ButtonInteraction> {
+class TestButton extends MyComponentInteraction<ButtonInteraction> {
     constructor() {
         super({
             data: new ButtonBuilder()
                 .setCustomId("test")
+                .setLabel("Test")
                 .setStyle(ButtonStyle.Secondary),
             botPermissions: [],
             memberPermissions: [],
@@ -16,3 +17,5 @@ export class TestButton extends MyComponentInteraction<ButtonInteraction> {
         interaction.reply("Ciao ciao");
     }
 }
+
+export default new TestButton();

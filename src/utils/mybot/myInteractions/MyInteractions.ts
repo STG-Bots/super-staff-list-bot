@@ -28,4 +28,9 @@ export abstract class MyComponentInteraction<I extends MyComponentInteractions> 
     constructor(settings: MyInteractionData<I>) {
         super(settings);
     }
+
+    getCustomId(): string {
+        if ("custom_id" in this.settings.data)
+        this.settings.data.data.customId
+    }
 }
