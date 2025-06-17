@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Events, ChannelType, MessageFlags, Partials, GuildMember, ButtonInteraction, ComponentType } from 'discord.js';
+import { Client, GatewayIntentBits, Events, ChannelType, MessageFlags, Partials, GuildMember, ButtonInteraction, ComponentType, ModalBuilder } from 'discord.js';
 import dotenv from 'dotenv';
 import path from 'path';
 import { CommandsManager, ComponentsManager } from './utils/mybot/managers/Managers';
@@ -16,8 +16,6 @@ const client = new MyClient({
     partials: [Partials.Message],
 }, path.join(__dirname, "commands"), path.join(__dirname, "components"));
 client.init();
-
-//console.log(new CommandsManager(path.join(__dirname,"commands")).loadFiles())
 
 /* Autocomplete 
 
@@ -91,7 +89,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 })();
 */
 
-/* Components */
+/* Components 
 const componentsManager = new ComponentsManager("./components");
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isMessageComponent() && !interaction.isButton() && !interaction.isAnySelectMenu()) return;
@@ -126,6 +124,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
     }
 });
+*/
 
 /* Eventi 
 

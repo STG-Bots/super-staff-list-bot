@@ -27,10 +27,14 @@ export type BuilderData<I extends Interaction> = I extends ButtonInteraction ? B
 export type MyComponentInteractions = ButtonInteraction | ModalSubmitInteraction | AnySelectMenuInteraction;
 
 export type MyInteractionData<I extends Interaction> = {
-    data: BuilderData<I>,
+    builder: BuilderData<I>,
     botPermissions: PermissionResolvable[],
     memberPermissions: PermissionResolvable[],
     onlyDevs: boolean
+}
+
+export type MyComponentInteractionData<I extends MyComponentInteractions> = MyInteractionData<I> & {
+    optionsInCustomId: boolean
 }
 
 /* ^ Interactions ^ */

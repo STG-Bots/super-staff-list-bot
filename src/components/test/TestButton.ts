@@ -4,13 +4,14 @@ import { MyComponentInteraction, MyInteraction } from "../../utils/mybot/myInter
 class TestButton extends MyComponentInteraction<ButtonInteraction> {
     constructor() {
         super({
-            data: new ButtonBuilder()
+            builder: new ButtonBuilder()
                 .setCustomId("test")
                 .setLabel("Test")
                 .setStyle(ButtonStyle.Secondary),
             botPermissions: [],
             memberPermissions: [],
-            onlyDevs: false
+            onlyDevs: false,
+            optionsInCustomId: false
         });
     }
     async execute(interaction: ButtonInteraction<CacheType>): Promise<void> {

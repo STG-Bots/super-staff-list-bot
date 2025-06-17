@@ -1,4 +1,4 @@
-import { ActivityType, ButtonBuilder, ChannelType, Client, ClientOptions, Events, GuildMember, MessageFlags, REST, Routes } from "discord.js";
+import { ActivityType, ButtonBuilder, ChannelType, Client, ClientOptions, Events, GuildMember, MessageFlags, ModalBuilder, ModalComponentBuilder, REST, Routes } from "discord.js";
 import { MyCommandInteraction, MyComponentInteraction } from "./myInteractions/MyInteractions";
 import { CommandsManager, ComponentsManager } from "./managers/Managers";
 import { MyComponentInteractions } from "./myInteractions/types";
@@ -34,7 +34,7 @@ export default class MyClient extends Client implements IMyClient {
         try {
             const data = await rest.put(
                 Routes.applicationCommands(process.env.CLIENT_ID!),
-                { body: allCommands.map(cmd => cmd.settings.data.toJSON()) },
+                { body: allCommands.map(cmd => cmd.builder.toJSON()) },
             );
 
             return data;
@@ -48,9 +48,9 @@ export default class MyClient extends Client implements IMyClient {
         this.on(Events.InteractionCreate, async (interaction) => {
             if (!interaction.isChatInputCommand()) return;
             if (interaction.channel?.type != ChannelType.DM) {
-                const cmd = this.commands.find(c => c.settings.data.name === interaction.commandName);
+                const cmd = this.commands.find(c => c.builder.name === interaction.commandName);
                 if (!cmd) return;
-                const { onlyDevs, memberPermissions, botPermissions } = cmd.settings;
+                const { onlyDevs, memberPermissions, botPermissions } = cmd;
                 if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id!)) {
                     if (onlyDevs) {
                         return interaction.reply({
@@ -85,9 +85,9 @@ export default class MyClient extends Client implements IMyClient {
         this.on(Events.InteractionCreate, async (interaction) => {
             if (!interaction.isMessageComponent() && !interaction.isButton() && !interaction.isAnySelectMenu()) return;
             if (interaction.channel?.type != ChannelType.DM) {
-                const component = this.components.find(c => (c.settings.data) ? interaction.customId.startsWith(c.settings.customId) : c.settings.customId === interaction.customId);
+                const component = this.components.find(c => "custom_id" in c.builder.data ? (c.optionsInCustomId ? interaction.customId.startsWith(c.builder.data.custom_id as string) : c.builder.data.custom_id === interaction.customId) : null);
                 if (!component) return;
-                const { onlyDevs, memberPermissions, botPermissions } = component.settings;
+                const { onlyDevs, memberPermissions, botPermissions } = component;
                 if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id as string)) {
                     if (onlyDevs) {
                         return interaction.reply({

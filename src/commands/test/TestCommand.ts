@@ -5,7 +5,7 @@ import TestButton from "../../components/test/TestButton";
 class TestCommand extends MyCommandInteraction {
     constructor() {
         super({
-            data: new SlashCommandBuilder().setName("test").setDescription("ciao"),
+            builder: new SlashCommandBuilder().setName("test").setDescription("ciao"),
             botPermissions: [],
             memberPermissions: [],
             onlyDevs: false
@@ -15,7 +15,7 @@ class TestCommand extends MyCommandInteraction {
         interaction.reply({
             components: [
                 new ActionRowBuilder<ButtonBuilder>()
-                    .addComponents(TestButton.settings.data)
+                    .addComponents(new ButtonBuilder(TestButton.builder.data))
             ],
             content: "ciao",
             flags: MessageFlags.Ephemeral
