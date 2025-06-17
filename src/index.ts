@@ -1,5 +1,5 @@
 import { Client, GatewayIntentBits, Events, ChannelType, MessageFlags, Partials, GuildMember, ButtonInteraction, ComponentType } from 'discord.js';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { CommandsManager, ComponentsManager } from './utils/mybot/managers/Managers';
 import MyClient from './utils/mybot/MyClient';
 
@@ -13,7 +13,9 @@ const client = new MyClient({
     partials: [Partials.Message],
 }, "./commands", "./components");
 
-client.init();
+//client.init();
+dotenv.config();
+console.log(process.env.TOKEN);
 
 /* Autocomplete 
 

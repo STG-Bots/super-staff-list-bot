@@ -2,6 +2,7 @@ import { ChannelType, Client, ClientOptions, Events, GuildMember, MessageFlags, 
 import { MyCommandInteraction, MyComponentInteraction } from "./myInteractions/MyInteractions";
 import { CommandsManager, ComponentsManager } from "./managers/Managers";
 import { MyComponentInteractions } from "./myInteractions/types";
+import 'dotenv/config';
 
 interface IMyClient {
     commandsManager: CommandsManager;
@@ -81,6 +82,7 @@ export default class MyClient extends Client implements IMyClient {
         });
     }
     async init() {
+        console.log(process.env.TOKEN);
         // Bot login
         this.login(process.env.TOKEN);
         // Commands
