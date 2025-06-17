@@ -1,9 +1,7 @@
-import { ButtonBuilder, ButtonInteraction, ChatInputCommandInteraction, CommandInteraction, MessageFlags, ModalBuilder, SlashCommandBuilder } from "discord.js";
-import { MyCommandInteraction, MyCommandInteractionSettings } from "../../utils/myInteractions/MyCommandInteraction";
-import { MyInteractionSettings } from "../../utils/myInteractions/MyInteractions";
-import { MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
+import { ChatInputCommandInteraction, MessageFlags, SlashCommandBuilder } from "discord.js";
+import { MyCommandInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-class TestCommand extends MyInteraction<ButtonInteraction> {
+class TestCommand extends MyCommandInteraction {
     constructor() {
         super({
             data: new SlashCommandBuilder().setName("test").setDescription("ciao"),

@@ -1,7 +1,7 @@
 import { ButtonBuilder, ButtonInteraction, ButtonStyle, CacheType, ModalBuilder, ModalSubmitInteraction } from "discord.js";
 import { MyComponentInteraction, MyInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-export class TestButton extends MyComponentInteraction<ModalSubmitInteraction> {
+export class TestButton extends MyComponentInteraction<ButtonInteraction> {
     constructor() {
         super({
             data: new ButtonBuilder()
@@ -12,7 +12,7 @@ export class TestButton extends MyComponentInteraction<ModalSubmitInteraction> {
             onlyDevs: false
         });
     }
-    async execute(interaction: ModalSubmitInteraction<CacheType>): Promise<void> {
-        
+    async execute(interaction: ButtonInteraction<CacheType>): Promise<void> {
+        interaction.reply("Ciao ciao");
     }
 }

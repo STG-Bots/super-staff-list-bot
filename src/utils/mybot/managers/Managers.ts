@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { MyComponentInteractions } from '../myInteractions/types';
-import { MyComponentInteraction, MyInteraction } from '../myInteractions/MyInteractions';
+import { MyCommandInteraction, MyComponentInteraction, MyInteraction } from '../myInteractions/MyInteractions';
 import { ChatInputCommandInteraction } from 'discord.js';
 
 export default abstract class Manager<T> {
@@ -16,13 +16,13 @@ export default abstract class Manager<T> {
     }
 }
 
-export class CommandsManager extends Manager<MyInteraction<ChatInputCommandInteraction>> {
+export class CommandsManager extends Manager<MyCommandInteraction> {
     constructor(readonly folderPath: string) {
         super(folderPath);
     }
 }
 
-export class ComponentsManager extends Manager<MyComponentInteraction> {
+export class ComponentsManager extends Manager<MyComponentInteraction<MyComponentInteractions>> {
     constructor(readonly folderPath: string) {
         super(folderPath);
     }

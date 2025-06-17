@@ -1,54 +1,19 @@
 import { Client, GatewayIntentBits, Events, ChannelType, MessageFlags, Partials, GuildMember, ButtonInteraction, ComponentType } from 'discord.js';
 import 'dotenv/config';
 import { CommandsManager, ComponentsManager } from './utils/mybot/managers/Managers';
+import MyClient from './utils/mybot/MyClient';
 
-const client = new Client({
+const client = new MyClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent
     ],
-    partials: [Partials.Message]
-});
+    partials: [Partials.Message],
+}, "./commands", "./components");
 
-client.login(process.env.TOKEN);
-
-/* Slash commands */
-
-const commandsManager = new CommandsManager("./commands");
-client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
-    if (interaction.channel?.type != ChannelType.DM) {
-        const cmd = (await Promise.all(await commandsManager.loadFiles())).find(c => c.settings.data.name === interaction.commandName);
-        if (!cmd) return;
-        const { onlyDevs, memberPermissions, botPermissions } = cmd.settings;
-        if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id as string)) {
-            if (onlyDevs) {
-                return interaction.reply({
-                    content: "Comando riservato ai devs",
-                    flags: MessageFlags.Ephemeral
-                });
-            } else if (memberPermissions.some(p => !(interaction.member as GuildMember)?.permissions.has(p))) {
-                return interaction.reply({
-                    content: "Non hai i permessi per eseguire questo comando",
-                    flags: MessageFlags.Ephemeral
-                });
-            }
-        } else if (botPermissions.some(p => !interaction.guild?.members.me?.permissions.has(p))) {
-            return interaction.reply({
-                content: "Non ho i permessi per eseguire questo comando",
-                flags: MessageFlags.Ephemeral
-            });
-        }
-
-        try {
-            cmd.execute(interaction);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-});
+client.init();
 
 /* Autocomplete 
 
@@ -122,7 +87,7 @@ client.on(Events.InteractionCreate, (interaction) => {
 })();
 */
 
-/* Components */
+/* Components 
 const componentsManager = new ComponentsManager("./components");
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isMessageComponent() && !interaction.isButton() && !interaction.isAnySelectMenu()) return;
@@ -157,6 +122,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         }
     }
 });
+*/
 
 /* Eventi 
 
