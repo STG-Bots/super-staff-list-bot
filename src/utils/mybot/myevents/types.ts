@@ -1,15 +1,8 @@
-import { Events } from "discord.js"
+import { ClientEvents, Events } from "discord.js"
 
-export type MyEventData<E = keyof Events> = {
-    name: E,
-    once?: boolean
+type EventParams<K extends Events> = {[K in keyof Events]: Events}
+
+export interface IMyEvent<E extends Events> {
+    execute(param:): void;
 }
-
-export type MyEventParams<E = keyof Events>
-
-const event1: MyEventData<Events.MessageCreate> = {
-    name: Events.MessageCreate
-
-};
-
 /* ^ Events ^ */
