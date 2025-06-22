@@ -1,7 +1,6 @@
 import { Client, GatewayIntentBits, Events, ChannelType, MessageFlags, Partials, GuildMember, ButtonInteraction, ComponentType, ModalBuilder } from 'discord.js';
 import dotenv from 'dotenv';
 import path from 'path';
-import { CommandsManager, ComponentsManager } from './utils/mybot/managers/Managers';
 import MyClient from './utils/mybot/MyClient';
 // Load env vars
 dotenv.config();
