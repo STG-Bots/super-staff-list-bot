@@ -1,14 +1,18 @@
-import { ActivityType, ButtonBuilder, ChannelType, Client, ClientOptions, Events, GuildMember, MessageFlags, ModalBuilder, ModalComponentBuilder, REST, Routes } from "discord.js";
+import { ActivityType, ButtonBuilder, ChannelType, Client, ClientEvents, ClientOptions, Events, GuildMember, MessageFlags, ModalBuilder, ModalComponentBuilder, REST, Routes } from "discord.js";
 import { MyCommandInteraction, MyComponentInteraction } from "./myInteractions/MyInteractions";
-import { CommandsManager, ComponentsManager } from "./managers/Managers";
+import { CommandsManager, ComponentsManager, EventsManager } from "./managers/Managers";
 import { MyComponentInteractions } from "./myInteractions/types";
 import 'dotenv/config';
+import MyEvent from "./myevents/MyEvents";
+import { MyEventKey } from "./myevents/types";
 
 interface IMyClient {
     commandsManager: CommandsManager;
     commands: MyCommandInteraction[];
     componentsManager: ComponentsManager;
     components: MyComponentInteraction<MyComponentInteractions>[];
+    eventsManager: EventsManager;
+    events: MyEvent<MyEventKey>[];
 }
 
 export default class MyClient extends Client implements IMyClient {
@@ -16,12 +20,16 @@ export default class MyClient extends Client implements IMyClient {
     commands: MyCommandInteraction[];
     componentsManager: ComponentsManager;
     components: MyComponentInteraction<MyComponentInteractions>[];
-    constructor(options: ClientOptions, commandsFolderPath: string, componentsFolderPath: string) {
+    eventsManager: EventsManager;
+    events: MyEvent<MyEventKey>[];
+    constructor(options: ClientOptions, commandsFolderPath: string, componentsFolderPath: string, eventsFolderPath: string) {
         super(options);
         this.commandsManager = new CommandsManager(commandsFolderPath);
         this.commands = [];
         this.componentsManager = new ComponentsManager(componentsFolderPath);
         this.components = [];
+        this.eventsManager = new EventsManager(eventsFolderPath);
+        this.events = [];
     }
     async loadCommands() {
         this.commands = await Promise.all(await this.commandsManager.loadFiles());
@@ -116,6 +124,13 @@ export default class MyClient extends Client implements IMyClient {
             }
         });
     }
+    async loadEvents() {
+        this.events = await Promise.all(await this.eventsManager.loadFiles());
+    }
+    async manageEvents() {
+        console.log(this.events);
+        this.events.forEach(event => this.on(event.settings.name, event.execute));
+    }
     async init() {
         // Bot login
         this.login(process.env.TOKEN);
@@ -126,9 +141,9 @@ export default class MyClient extends Client implements IMyClient {
         // Components
         await this.loadComponents();
         await this.manageComponents();
-        this.on("ready", (bot) => {
-            bot.user.setActivity({ name: "test", type: ActivityType.Watching });
-        });
+        // Events
+        await this.loadEvents();
+        await this.manageEvents();
     }
 
 }

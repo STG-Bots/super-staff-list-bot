@@ -8,7 +8,7 @@ class TestEvent extends MyEvent<Events.ClientReady> {
         });
     }
     async execute(client: Client<true>): Promise<void> {
-        
+        console.log(client.user.username);
     }
 }
 
