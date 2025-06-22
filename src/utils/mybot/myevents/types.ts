@@ -1,8 +1,14 @@
 import { ClientEvents, Events } from "discord.js"
 
-type EventParams<K extends Events> = {[K in keyof Events]: Events}
+export type MyEventParams<E extends keyof ClientEvents> = ClientEvents[E];
 
-export interface IMyEvent<E extends Events> {
-    execute(param:): void;
+export type MyEventData<E extends keyof ClientEvents> = {
+    name: E,
+    once?: boolean
+}
+
+export interface IMyEvent<E extends keyof ClientEvents> {
+    settings: MyEventData<E>;
+    execute(...params: MyEventParams<E>): Promise<void>;
 }
 /* ^ Events ^ */

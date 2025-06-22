@@ -17,8 +17,6 @@ const client = new MyClient({
 }, path.join(__dirname, "commands"), path.join(__dirname, "components"));
 client.init();
 
-client.on("guildMemberUpdate", ())
-
 /* Autocomplete 
 
 client.on(Events.InteractionCreate, (interaction) => {
