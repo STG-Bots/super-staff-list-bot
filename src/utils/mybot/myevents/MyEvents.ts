@@ -1,7 +1,7 @@
 import { ClientEvents } from "discord.js";
-import { IMyEvent, MyEventData, MyEventParams } from "./types";
+import { IMyEvent, MyEventData, MyEventKey, MyEventParams } from "./types";
 
-export default abstract class MyEvent<E extends keyof ClientEvents> implements IMyEvent<E> {
+export default abstract class MyEvent<E extends MyEventKey> implements IMyEvent<E> {
     settings: MyEventData<E>;
     constructor(settings: MyEventData<E>) {
         this.settings = settings;
