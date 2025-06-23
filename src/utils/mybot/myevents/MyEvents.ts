@@ -1,4 +1,4 @@
-import { ClientEvents, Events, NonThreadGuildBasedChannel } from "discord.js";
+import { ClientEvents } from "discord.js";
 import { IMyEvent, MyEventData, MyEventParams } from "./types";
 
 export default abstract class MyEvent<E extends keyof ClientEvents> implements IMyEvent<E> {
@@ -7,5 +7,4 @@ export default abstract class MyEvent<E extends keyof ClientEvents> implements I
         this.settings = settings;
     }
     abstract execute(...params: MyEventParams<E>): Promise<void>;
-    
 }

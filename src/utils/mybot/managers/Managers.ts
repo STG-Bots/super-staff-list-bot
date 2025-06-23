@@ -11,8 +11,8 @@ export default abstract class Manager<T> {
 
     public async loadFiles(): Promise<T[]> {
         const files = fs.readdirSync(this.folderPath, { recursive: true })
-        .filter((path: any) => path.endsWith(".ts"))
-        .map(async (filePath: any) => (await import(`file://${this.folderPath}/${filePath}`)).default);
+        .filter((path: any) => path.endsWith(".ts") || path.endsWith(".js"))
+        .map(async (filePath: any) => (await import(`${this.folderPath}/${filePath}`)).default);
         return (files as T[]);
     }
 }

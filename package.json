@@ -1,7 +1,7 @@
 {
   "name": "new-superstafflist-bot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "dependencies": {
     "bson": "^6.10.3",
     "cron": "^4.3.1",
@@ -36,7 +36,9 @@
     "ws": "^8.18.2"
   },
   "scripts": {
-    "dev": "npx tsx ./src/index.ts"
+    "dev": "npx tsx ./src/index.ts",
+    "compile": "tsc",
+    "start": "node ./dist/index.js"
   },
   "repository": {
     "type": "git",
