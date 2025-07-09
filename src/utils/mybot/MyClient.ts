@@ -1,4 +1,4 @@
-import { ActivityType, ButtonBuilder, ChannelType, Client, ClientEvents, ClientOptions, Events, GuildMember, MessageFlags, ModalBuilder, ModalComponentBuilder, REST, Routes } from "discord.js";
+import { ActivityType, ButtonBuilder, ChannelType, Client, ClientEvents, ClientOptions, Events, GuildMember, Interaction, MessageFlags, ModalBuilder, ModalComponentBuilder, REST, Routes } from "discord.js";
 import { MyCommandInteraction, MyComponentInteraction } from "./myInteractions/MyInteractions";
 import { CommandsManager, ComponentsManager, EventsManager } from "./managers/Managers";
 import { MyComponentInteractions } from "./myInteractions/types";
@@ -86,6 +86,25 @@ export default class MyClient extends Client implements IMyClient {
             }
         });
     }
+    async manageAutocomples() {
+        this.on(Events.InteractionCreate, async (interaction) => {
+            if (!interaction.isAutocomplete()) return;
+            if (interaction.channel?.type != ChannelType.DM) {
+                const cmd = this.commands.find(c => c.builder.name === interaction.commandName);
+                if (!cmd) return;
+                const { onlyDevs, memberPermissions, botPermissions } = cmd;
+                if ((onlyDevs && !process.env.DEVS?.split(",").includes(interaction.member?.user.id!)) ||
+                     memberPermissions.some(p => !(interaction.member as GuildMember)?.permissions.has(p)))
+                    return;
+
+                try {
+                    cmd.autocomplete(interaction);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        });
+    }
     async loadComponents() {
         this.components = await Promise.all(await this.componentsManager.loadFiles());
     }
@@ -128,7 +147,6 @@ export default class MyClient extends Client implements IMyClient {
         this.events = await Promise.all(await this.eventsManager.loadFiles());
     }
     async manageEvents() {
-        console.log(this.events);
         this.events.forEach(event => this.on(event.settings.name, event.execute));
     }
     async init() {
@@ -138,6 +156,7 @@ export default class MyClient extends Client implements IMyClient {
         await this.loadCommands();
         await this.uploadCommands();
         await this.manageCommands();
+        await this.manageAutocomples();
         // Components
         await this.loadComponents();
         await this.manageComponents();

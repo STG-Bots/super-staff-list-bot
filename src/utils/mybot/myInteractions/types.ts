@@ -1,4 +1,4 @@
-import { AnySelectMenuInteraction, ButtonBuilder, ButtonInteraction, ChannelSelectMenuBuilder, ChannelSelectMenuInteraction, ChatInputCommandInteraction, Interaction, InteractionType, ModalBuilder, ModalSubmitInteraction, PermissionResolvable, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SlashCommandBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, UserSelectMenuBuilder, UserSelectMenuInteraction } from "discord.js";
+import { AnySelectMenuInteraction, ButtonBuilder, ButtonInteraction, ChannelSelectMenuBuilder, ChannelSelectMenuInteraction, ChatInputCommandInteraction, Interaction, InteractionType, ModalBuilder, ModalSubmitInteraction, PermissionResolvable, RoleSelectMenuBuilder, RoleSelectMenuInteraction, SlashCommandBuilder, SlashCommandOptionsOnlyBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction, UserSelectMenuBuilder, UserSelectMenuInteraction } from "discord.js";
 
 /* v Builders v */
 
@@ -17,7 +17,7 @@ export type BuilderData<I extends Interaction> = I extends ButtonInteraction ? B
                             (I extends RoleSelectMenuInteraction ? RoleSelectMenuBuilder :
                             (I extends UserSelectMenuInteraction ? UserSelectMenuBuilder :
                             (I extends ChannelSelectMenuInteraction ? ChannelSelectMenuBuilder :
-                            (I extends ChatInputCommandInteraction ? SlashCommandBuilder : never)
+                            (I extends ChatInputCommandInteraction ? SlashCommandBuilder | SlashCommandOptionsOnlyBuilder : never)
                             )))));
 
 /* ^ Builders ^ */

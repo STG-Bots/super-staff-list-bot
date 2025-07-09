@@ -16,8 +16,6 @@ const client = new MyClient({
 }, path.join(__dirname, "commands"), path.join(__dirname, "components"), path.join(__dirname, "events"));
 client.init();
 
-console.log(__dirname);
-
 /* Autocomplete 
 
 client.on(Events.InteractionCreate, (interaction) => {
