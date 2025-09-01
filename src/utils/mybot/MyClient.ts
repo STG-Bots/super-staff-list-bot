@@ -59,6 +59,7 @@ export default class MyClient extends Client implements IMyClient {
                 const cmd = this.commands.find(c => c.builder.name === interaction.commandName);
                 if (!cmd) return;
                 const { onlyDevs, memberPermissions, botPermissions } = cmd;
+                // Check the dev's permissions
                 if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id!)) {
                     if (onlyDevs) {
                         return interaction.reply({
@@ -81,7 +82,8 @@ export default class MyClient extends Client implements IMyClient {
                 try {
                     await cmd.execute(interaction);
                 } catch (error) {
-                    console.log(error);
+                    console.log(`💬❌ Command error: ${cmd.builder.name.toLocaleUpperCase()}`);
+                    console.log(`\n${error}\n`);
                 }
             }
         });
@@ -96,11 +98,11 @@ export default class MyClient extends Client implements IMyClient {
                 if ((onlyDevs && !process.env.DEVS?.split(",").includes(interaction.member?.user.id!)) ||
                      memberPermissions.some(p => !(interaction.member as GuildMember)?.permissions.has(p)))
                     return;
-
                 try {
                     await cmd.autocomplete(interaction);
                 } catch (error) {
-                    console.log(error);
+                    console.log(`❌ Autocomplete error: ${cmd.builder.name.toUpperCase()}`);
+                    console.log(`\n${error}\n`);
                 }
             }
         });
@@ -115,6 +117,7 @@ export default class MyClient extends Client implements IMyClient {
                 const component = this.components.find(c => "custom_id" in c.builder.data ? (c.optionsInCustomId ? interaction.customId.startsWith(c.builder.data.custom_id as string) : c.builder.data.custom_id === interaction.customId) : null);
                 if (!component) return;
                 const { onlyDevs, memberPermissions, botPermissions } = component;
+                
                 if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id as string)) {
                     if (onlyDevs) {
                         return interaction.reply({
@@ -138,7 +141,9 @@ export default class MyClient extends Client implements IMyClient {
                 try {
                     await component.execute(interaction);
                 } catch (error) {
-                    console.log(error);
+                    const componentCustomID = "custom_id" in component.builder.data ? component.builder.data.custom_id : null;
+                    if (componentCustomID) console.log(`🧩❌ Component error: ${componentCustomID}`);
+                    console.log(`\n${error}\n`);
                 }
             }
         });

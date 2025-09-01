@@ -5,7 +5,7 @@ class TestButton extends MyComponentInteraction<ButtonInteraction> {
     constructor() {
         super({
             builder: new ButtonBuilder()
-                .setCustomId("test")
+                .setCustomId("test_btn")
                 .setLabel("Test")
                 .setStyle(ButtonStyle.Secondary),
             botPermissions: [],
@@ -15,6 +15,7 @@ class TestButton extends MyComponentInteraction<ButtonInteraction> {
         });
     }
     async execute(interaction: ButtonInteraction<CacheType>): Promise<void> {
+        throw new Error("Test errror");
         interaction.reply("Ciao ciao");
     }
 }

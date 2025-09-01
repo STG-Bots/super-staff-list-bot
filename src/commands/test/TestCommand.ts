@@ -36,8 +36,6 @@ class TestCommand extends MyCommandInteraction {
         })
     }
     async autocomplete(interaction: AutocompleteInteraction): Promise<void> {
-        throw new Error("Test errror");
-        let a = null;
         const optionName = interaction.options.data[0].name;
         if (optionName === "option1")
             interaction.respond([{ name: "Nome1", value: "valore1" }]);
