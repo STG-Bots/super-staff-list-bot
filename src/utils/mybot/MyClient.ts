@@ -79,7 +79,7 @@ export default class MyClient extends Client implements IMyClient {
                 }
 
                 try {
-                    cmd.execute(interaction);
+                    await cmd.execute(interaction);
                 } catch (error) {
                     console.log(error);
                 }
@@ -98,7 +98,7 @@ export default class MyClient extends Client implements IMyClient {
                     return;
 
                 try {
-                    cmd.autocomplete(interaction);
+                    await cmd.autocomplete(interaction);
                 } catch (error) {
                     console.log(error);
                 }
@@ -136,7 +136,7 @@ export default class MyClient extends Client implements IMyClient {
         
                 // Check component type
                 try {
-                    component.execute(interaction);
+                    await component.execute(interaction);
                 } catch (error) {
                     console.log(error);
                 }
