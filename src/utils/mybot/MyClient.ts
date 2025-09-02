@@ -4,7 +4,7 @@ import { CommandsManager, ComponentsManager, EventsManager } from "./managers/Ma
 import { MyComponentInteractions } from "./myInteractions/types";
 import 'dotenv/config';
 import MyEvent from "./myevents/MyEvents";
-import { MyEventKey } from "./myevents/types";
+import { MyEventKey, MyEventParams } from "./myevents/types";
 
 interface IMyClient {
     commandsManager: CommandsManager;
@@ -82,7 +82,7 @@ export default class MyClient extends Client implements IMyClient {
                 try {
                     await cmd.execute(interaction);
                 } catch (error) {
-                    console.log(`💬❌ Command error: ${cmd.builder.name.toLocaleUpperCase()}`);
+                    console.log(`💬 ❌ Command error: ${cmd.builder.name.toLocaleUpperCase()}`);
                     console.log(`\n${error}\n`);
                 }
             }
@@ -96,12 +96,12 @@ export default class MyClient extends Client implements IMyClient {
                 if (!cmd) return;
                 const { onlyDevs, memberPermissions, botPermissions } = cmd;
                 if ((onlyDevs && !process.env.DEVS?.split(",").includes(interaction.member?.user.id!)) ||
-                     memberPermissions.some(p => !(interaction.member as GuildMember)?.permissions.has(p)))
+                    memberPermissions.some(p => !(interaction.member as GuildMember)?.permissions.has(p)))
                     return;
                 try {
                     await cmd.autocomplete(interaction);
                 } catch (error) {
-                    console.log(`❌ Autocomplete error: ${cmd.builder.name.toUpperCase()}`);
+                    console.log(`✒️ ❌ Autocomplete error: ${cmd.builder.name.toUpperCase()}`);
                     console.log(`\n${error}\n`);
                 }
             }
@@ -117,7 +117,7 @@ export default class MyClient extends Client implements IMyClient {
                 const component = this.components.find(c => "custom_id" in c.builder.data ? (c.optionsInCustomId ? interaction.customId.startsWith(c.builder.data.custom_id as string) : c.builder.data.custom_id === interaction.customId) : null);
                 if (!component) return;
                 const { onlyDevs, memberPermissions, botPermissions } = component;
-                
+
                 if (!process.env.DEVS?.split(",").includes(interaction.member?.user.id as string)) {
                     if (onlyDevs) {
                         return interaction.reply({
@@ -136,13 +136,13 @@ export default class MyClient extends Client implements IMyClient {
                         flags: MessageFlags.Ephemeral
                     });
                 }
-        
+
                 // Check component type
                 try {
                     await component.execute(interaction);
                 } catch (error) {
                     const componentCustomID = "custom_id" in component.builder.data ? component.builder.data.custom_id : null;
-                    if (componentCustomID) console.log(`🧩❌ Component error: ${componentCustomID}`);
+                    if (componentCustomID) console.log(`🧩 ❌ Component error: ${componentCustomID.toUpperCase()}`);
                     console.log(`\n${error}\n`);
                 }
             }
@@ -152,7 +152,14 @@ export default class MyClient extends Client implements IMyClient {
         this.events = await Promise.all(await this.eventsManager.loadFiles());
     }
     async manageEvents() {
-        this.events.forEach(event => this.on(event.settings.name, event.execute));
+        this.events.forEach(event => this.on(event.settings.name, async (...params: any) => {
+            try {
+                await event.execute(params);
+            } catch (error) {
+                console.log(`🔁 ❌ Event error: ${event.settings.name.toUpperCase()}`);
+                console.log(`\n${error}\n`);
+            }
+        }));
     }
     async init() {
         // Bot login
