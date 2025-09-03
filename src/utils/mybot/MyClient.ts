@@ -160,18 +160,6 @@ export default class MyClient extends Client implements IMyClient {
                 console.log(`\n${error}\n`);
             }
         }));
-
-        /*
-        // Ipothetical code
-        async (params: keyof ClientEvents) => {
-            try {
-                await event.execute(params);
-            } catch (error) {
-                console.log(`🔁 ❌ Event error: ${event.settings.name.toUpperCase()}`);
-                console.log(`\n${error}\n`);
-            }
-        }
-        */
     }
     async init() {
         // Bot login
