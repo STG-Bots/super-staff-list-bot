@@ -81,9 +81,10 @@ export default class MyClient extends Client implements IMyClient {
 
                 try {
                     await cmd.execute(interaction);
-                } catch (error) {
+                } catch (e) {
+                    const error: Error = e as Error;
                     console.log(`💬 ❌ Command error: ${cmd.builder.name.toLocaleUpperCase()}`);
-                    console.log(`\n${error}\n`);
+                    console.log(`\n${error.stack}\n`);
                 }
             }
         });
@@ -100,9 +101,10 @@ export default class MyClient extends Client implements IMyClient {
                     return;
                 try {
                     await cmd.autocomplete(interaction);
-                } catch (error) {
+                } catch (e) {
+                    const error: Error = e as Error;
                     console.log(`✒️ ❌ Autocomplete error: ${cmd.builder.name.toUpperCase()}`);
-                    console.log(`\n${error}\n`);
+                    console.log(`\n${error.stack}\n`);
                 }
             }
         });
@@ -140,10 +142,11 @@ export default class MyClient extends Client implements IMyClient {
                 // Check component type
                 try {
                     await component.execute(interaction);
-                } catch (error) {
+                } catch (e) {
+                    const error: Error = e as Error;
                     const componentCustomID = "custom_id" in component.builder.data ? component.builder.data.custom_id : null;
                     if (componentCustomID) console.log(`🧩 ❌ Component error: ${componentCustomID.toUpperCase()}`);
-                    console.log(`\n${error}\n`);
+                    console.log(`\n${error.stack}\n`);
                 }
             }
         });
@@ -155,9 +158,10 @@ export default class MyClient extends Client implements IMyClient {
         this.events.forEach(event => this.on(event.settings.name, async (...params) => {
             try {
                 await event.execute(...params);
-            } catch (error) {
+            } catch (e) {
+                const error: Error = e as Error;
                 console.log(`🔁 ❌ Event error: ${event.settings.name.toUpperCase()}`);
-                console.log(`\n${error}\n`);
+                console.log(`\n${error.stack}\n`);
             }
         }));
     }
