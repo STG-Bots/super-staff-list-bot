@@ -152,7 +152,14 @@ export default class MyClient extends Client implements IMyClient {
         this.events = await Promise.all(await this.eventsManager.loadFiles());
     }
     async manageEvents() {
-        this.events.forEach(event => this.on(event.settings.name, event.execute));
+        this.events.forEach(event => this.on(event.settings.name, async (...params) => {
+            try {
+                await event.execute(...params);
+            } catch (error) {
+                console.log(`🔁 ❌ Event error: ${event.settings.name.toUpperCase()}`);
+                console.log(`\n${error}\n`);
+            }
+        }));
 
         /*
         // Ipothetical code
