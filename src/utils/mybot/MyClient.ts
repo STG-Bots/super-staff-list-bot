@@ -4,7 +4,7 @@ import { CommandsManager, ComponentsManager, EventsManager } from "./managers/Ma
 import { MyComponentInteractions } from "./myInteractions/types";
 import 'dotenv/config';
 import MyEvent from "./myevents/MyEvents";
-import { MyEventKey, MyEventParams } from "./myevents/types";
+import { MyEventKey } from "./myevents/types";
 
 interface IMyClient {
     commandsManager: CommandsManager;

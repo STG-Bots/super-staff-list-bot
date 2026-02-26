@@ -10,7 +10,7 @@ class TestEvent extends MyEvent<Events.ClientReady> {
     async execute(client: Client<true>): Promise<void> {
         client.user.setPresence({
             activities: [{ name: "ON", state: "online" }]
-        })
+        });
         console.log(client.user.username);
     }
 }
