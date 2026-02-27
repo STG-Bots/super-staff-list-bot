@@ -1,20 +1,20 @@
 import { AutocompleteInteraction, ChatInputCommandInteraction, CacheType, SlashCommandBuilder, PermissionsBitField, MessageFlags, DiscordAPIError, EmbedBuilder, Colors } from "discord.js";
 import { MyCommandInteraction } from "../../utils/mybot/myInteractions/MyInteractions";
 
-class PexCommand extends MyCommandInteraction {
+class DepexCommand extends MyCommandInteraction {
     constructor() {
         super({
             builder: new SlashCommandBuilder()
-                .setName("pex")
-                .setDescription("Pexa un utente")
+                .setName("depex")
+                .setDescription("Depexa un utente")
                 .addUserOption(option =>
                     option.setName("utente")
-                    .setDescription("Utente da pexare")
+                    .setDescription("Utente da depexare")
                     .setRequired(true)
                 )
                 .addRoleOption(option =>
                     option.setName("ruolo")
-                    .setDescription("Ruolo da aggiungere")
+                    .setDescription("Ruolo da rimuovere")
                     .setRequired(true)
                 ),
             botPermissions: [PermissionsBitField.Flags.ManageRoles],
@@ -45,9 +45,9 @@ class PexCommand extends MyCommandInteraction {
         }
 
         const member = interaction.guild.members.cache.get(user.id)!;
-        // Add the newRole to the user
-        const addNewRoleRes = newRole && await member.roles.add(newRole.id).catch((e) => console.log(e));
-        if (!addNewRoleRes) {
+        // Remove the newRole to the user
+        const removeNewRoleRes = newRole && await member.roles.remove(newRole.id).catch((e) => console.log(e));
+        if (!removeNewRoleRes) {
             interaction.reply({
                 content: `Non è stato possibile assegnare i ruoli: controllare che il ruolo del bot sia al di sopra`,
                 flags: MessageFlags.Ephemeral
@@ -59,10 +59,10 @@ class PexCommand extends MyCommandInteraction {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle("✅ Ruolo Assegnato!")
-                .setDescription(`${newRole.name} assegnato a ${member}\n\n**👤 Utente**\n${member}\n\n**🎭 Ruolo**\n${newRole.name}\n\n**🛡️ Assegnato da**\n${interaction.member}`)
+                .setTitle("✅ Ruolo Rimosso!")
+                .setDescription(`**${newRole.name}** rimosso a ${member}\n\n**👤 Utente**\n${member}\n\n**🎭 Ruolo**\n${newRole.name}\n\n**🛡️ Rimosso da**\n${interaction.member}`)
                 .setThumbnail(`https://cdn.discordapp.com/avatars/${member.user.id}/${member.user.avatar}.png?size=64`)
-                .setColor(Colors.Green)
+                .setColor(Colors.DarkOrange)
             ]
         });
     }
@@ -71,4 +71,4 @@ class PexCommand extends MyCommandInteraction {
     }
 }
 
-export default new PexCommand();
+export default new DepexCommand();
